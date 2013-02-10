@@ -7,25 +7,36 @@
 #
 # Configured Variables:
 #
-PYTHON_EXEC="/usr/bin/python"
-WEMO_EXEC="/opt/share/restWemo/server.py"
- 
-# Begin script
-#
-case "$1" in
-start)
-  PATH=$PATH:/opt/bin
-  printf "%-30s" "Starting wemo rest server"
-  ${PYTHON_EXEC} ${WEMO_EXEC} &
-  printf "[%4s]\n" "done"
-  ;;
-stop)
-  printf "%-30s" "Stopping Wemo server"
-  printf "[%4s]\n" "done"
-  ;;
-*)
-  echo "Usage: $0 {start|stop}"
-  exit 1
-esac
+WEMO_EXEC="/volume1/homes/canvin/wemo/run.py"  
+WEMO_PID="/tmp/wemo.pid"                       
+                                               
+# Begin script                               
+#                                            
+case "$1" in                                 
+start)                                       
+  PATH=$PATH:/opt/bin                        
+  printf "%-30s" "Starting wemo rest server" 
+  ${PYTHON_EXEC} ${WEMO_EXEC} &              
+  echo $! > $WEMO_PID                        
+  printf "[%4s]\n" "done"                   
+  ;;                                        
+stop)                                       
+  printf "%-30s" "Stopping wemo server"     
+  PID=$(cat $WEMO_PID)                      
+  kill $PID                                 
+  printf "[%4s]\n" "done"                   
+  ;;                                        
+status)                                
+PID=$(cat $WEMO_PID)                   
+if [ -e /proc/${PID} -a /proc/${PID}/exe ]; then
+echo "Still running" 
+else                                            
+echo "not running"                              
+fi                                              
+;;                                              
+*)                                              
+  echo "Usage: $0 {start|stop|status}"          
+  exit 1                                        
+esac                                            
  
 exit 0
