@@ -9,17 +9,18 @@ wemoManager = wemoManager('wemo.json')
 @route('/wemo/<id>/on')
 def routeOn(id=1):
 	status = wemoManager.on(id)
-	return _getStatusInJson(id,status)
+	return _getStatusInJson(status)
     
 @route('/wemo/<id>/off')
 def routeOff(id=1):
 	status = wemoManager.off(id)
-	return _getStatusInJson(id,status)
+	return _getStatusInJson(status)
     
 @route('/wemo/<id>/status')
 def routeStatus(id=1):
 	status = wemoManager.status(id)
-	return _getStatusInJson(id,status)
+	printStatus = ('ON' if status else 'OFF')
+	return json.dumps({id: printStatus})
     
 @route('/wemo/all/on')
 def routeAllOn():
@@ -41,9 +42,9 @@ def routeUpdateAll():
 	wemoManager.allUpdate()
 	return routeStatusAll()
 	
-def _getStatusInJson(id,status):
-	printStatus = ('OFF' if status else 'ON')
-	return json.dumps({id: printStatus})
+def _getStatusInJson(status):
+	printStatus = ('OK' if status else 'NOK')
+	return json.dumps({"return": printStatus})
     
 @route('/favicon.ico', method='GET')
 def get_favicon():

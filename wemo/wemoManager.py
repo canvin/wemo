@@ -92,8 +92,8 @@ class wemoManager:
 	
 	# Gets the value of the id wemo
 	def status(self,id):
-		print ("get status of : "+ id)
 		controlURL = self.LIST_OF_WEMO_HOST.get(id)
+		print ("get status of : "+ controlURL)
 		if  controlURL is not None:
 			resp = self.util.send(controlURL, 'GetBinaryState')
 			tagValue = self.util.getState(resp)
@@ -104,8 +104,8 @@ class wemoManager:
 	#    Turns on the switch that it finds.
 	#     BinaryState is set to 'Error' in the case that it was already on.
 	def on(self,id):
-		print ("Put on : "+ id)
 		controlURL = self.LIST_OF_WEMO_HOST.get(id)
+		print ("Put on : "+ controlURL)
 		if  controlURL is not None:
 			resp = self.util.send(controlURL,'SetBinaryState', {'BinaryState': (1, 'Boolean')})
 			tagValue = self.util.getState(resp)
@@ -116,8 +116,8 @@ class wemoManager:
 	#    Turns on the switch that it finds.
 	#     BinaryState is set to 'Error' in the case that it was already off.
 	def off(self,id):
-		print ("Put off : "+ id)
 		controlURL = self.LIST_OF_WEMO_HOST.get(id)
+		print ("Put off : "+ controlURL)
 		if  controlURL is not None:
 			resp = self.util.send(controlURL,'SetBinaryState', {'BinaryState': (0, 'Boolean')})
 			tagValue = self.util.getState(resp)
@@ -140,15 +140,15 @@ class wemoManager:
 	def allStatus(self):
 		statusDict = {}
 		for index in self.LIST_OF_WEMO_HOST:
-			curSatus = self.status(index)
-			statusDict.update({str(index):str(curSatus)})
+			printStatus = ('ON' if self.status(index) else 'OFF')
+			statusDict.update({str(index):printStatus})
 		return statusDict
 			
 	#    Update list of Wemo and return it in dict format
 	def allUpdate(self):
 		print ("Update wemo configuration")
 		listOfWemo = self.util.getListOfWemoOnNetwork()
-		print "allUpdate :: Find "+  str(len(listOfWemo)) + " wemo"
+		print "Finish -> Find "+  str(len(listOfWemo)) + " wemo"
 		self.setWemoToJsonFile(self.fileName,listOfWemo)
 		self.LIST_OF_WEMO_HOST = listOfWemo
 		return listOfWemo
