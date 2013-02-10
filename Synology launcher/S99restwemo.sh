@@ -1,9 +1,7 @@
 #!/bin/sh
 #
 # Synology DSM init script for Wemo REST server
-# Requires: sabnzbd
-#           python
-#           wget
+# place it under /opt/etc/init.d/
 #
 # Configured Variables:
 #
@@ -16,7 +14,7 @@ case "$1" in
 start)                                       
   PATH=$PATH:/opt/bin                        
   printf "%-30s" "Starting wemo rest server" 
-  ${PYTHON_EXEC} ${WEMO_EXEC} &              
+  nohup ${PYTHON_EXEC} ${WEMO_EXEC} > /dev/null 2>&1 &            
   echo $! > $WEMO_PID                        
   printf "[%4s]\n" "done"                   
   ;;                                        
