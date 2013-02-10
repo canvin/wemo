@@ -176,7 +176,7 @@ class upnp:
 		try:
 			newsock = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP)
 			newsock.setsockopt(SOL_SOCKET,SO_REUSEADDR,1)
-			print ("myip =" + gethostbyname(gethostname()) + " and ip =" + ip)
+			#print ("myip =" + gethostbyname(gethostname()) + " and ip =" + ip)
 			newsock.bind((ip,port))			
 			return newsock
 		except:
@@ -834,7 +834,7 @@ def msearch(argc, argv, hp, cycles=99999999):
 	print ''
 
 	#Have to create a new socket since replies will be sent directly to our IP, not the multicast IP
-	server = hp.createNewListener('192.168.4.35',lport)
+	server = hp.createNewListener(gethostbyname(gethostname()),lport)
 	if server == False:
 		print 'ooups Failed to bind port %d' % lport
 		return

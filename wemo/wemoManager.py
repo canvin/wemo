@@ -11,7 +11,7 @@ class wemoUtils:
 	
 	# Returns list of wemo
 	def getListOfWemoOnNetwork(self):
-		msearch(0, 0, self.conn, 4)
+		msearch(0, 0, self.conn, 2)
 		listOfWemo = {}	
 		i=1
 		for index in self.conn.ENUM_HOSTS:
@@ -67,6 +67,9 @@ class wemoManager:
 		#if file empty lookup for wemo
 		if not self.LIST_OF_WEMO_HOST:
 			self.allUpdate()
+		else:
+			print "Configuration contains "+  str(len(self.LIST_OF_WEMO_HOST)) + " wemo(s)"
+
 
 	def setWemoToJsonFile(self,fileName,wemoList):
 		wemoInJson = json.dumps(wemoList)
@@ -76,13 +79,13 @@ class wemoManager:
 		return wemoInJson
 				
 	def getWemoFromJsonFile(self,fileName):
-		print ("reading file : "+ fileName)
+		print ("reading configuration file : "+ fileName)
 		wemoDict = {}
 		try: 
 			with open(os.getcwd()+'/'+fileName, 'r') as f:	
 				wemoDict = json.loads(f.read())
 		except IOError: 
-			print 'There is no file named ' + fileName
+			print 'There is no configuration file named ' + fileName
 			return wemoDict
 		
 		return wemoDict
@@ -111,7 +114,7 @@ class wemoManager:
 			return False
 	
 	#    Turns on the switch that it finds.
-	#     BinaryState is set to 'Error' in the case that it was already on.
+	#     BinaryState is set to 'Error' in the case that it was already off.
 	def off(self,id):
 		print ("Put off : "+ id)
 		controlURL = self.LIST_OF_WEMO_HOST.get(id)
@@ -143,9 +146,9 @@ class wemoManager:
 			
 	#    Update list of Wemo and return it in dict format
 	def allUpdate(self):
-		print ("Update wemo ")
+		print ("Update wemo configuration")
 		listOfWemo = self.util.getListOfWemoOnNetwork()
-		print "Find "+  str(len(listOfWemo)) + " new wemo"
+		print "allUpdate :: Find "+  str(len(listOfWemo)) + " wemo"
 		self.setWemoToJsonFile(self.fileName,listOfWemo)
 		self.LIST_OF_WEMO_HOST = listOfWemo
 		return listOfWemo
