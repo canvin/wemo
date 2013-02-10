@@ -20,8 +20,7 @@ start)
   printf "[%4s]\n" "done"
   ;;
 stop)
-  printf "%-30s" "Stopping SABnzbd"
-  /opt/bin/wget -q --delete-after "http://127.0.0.1:${SABNZBD_PORT}/shutdown?session=${SAB_API_KEY}"
+  printf "%-30s" "Stopping Wemo server"
   printf "[%4s]\n" "done"
   ;;
 *)
