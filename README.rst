@@ -13,11 +13,15 @@ This saved your wemo configuration in a file called wemo.json
 Current command support:
 
 wemo/<id>/on
+
 wemo/<id>/off
+
 wemo/<id>/status
 
 wemo/all/on
+
 wemo/all/off
+
 wemo/all/status
 
-wemo/update
+wemo/update -> this refresh wemo configuration (could be a cron task)
